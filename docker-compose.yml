@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   webserver:
-    build: .
+    build: ./base/
     ports:
       - 8000:80
       - 443:80
