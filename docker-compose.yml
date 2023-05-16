@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  webserver:
+    build: .
+    ports:
+      - 8000:80
+      - 443:80
+    environment:
+      - WEB_ROOT=/var/www/html
+      - SERVER_NAME=localhost
+      - DB_HOST=database
+      - DB_NAME=devpanel_nodejs
+      - DB_PASSWORD=devpanel123
+      - DB_USER=root
+      - DP_APP_ID=640ae6b75b7e505f9af9aab4
+    volumes:
+      - /home/kha/devpanel/custom_templates/blog-strapi:/var/www/html/
+      - /home/kha/devpanel/templates/drupal9_v2:/var/www/html/.devpanel
+    depends_on:
+      - database
+  database:
+    image: mysql:5.7
+    ports:
+      - 3307:3306
+    volumes:
+      - "/var/data/mysql:/var/lib/mysql/"
+    environment:
+      - MYSQL_ROOT_PASSWORD=devpanel123
