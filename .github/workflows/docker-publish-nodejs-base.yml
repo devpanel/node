@@ -6,7 +6,7 @@ env:
 on:
   push:
     paths:
-      - "base/**"
+      - "16/base/**"
     branches:
       - main
       - develop
@@ -19,12 +19,12 @@ jobs:
       - name: Set env to testing environment
         if: endsWith(github.ref, '/develop')
         run: |
-          echo "IMAGE_TAG=devpanel/nodejs-rc" >> $GITHUB_ENV
+          echo "IMAGE_TAG=devpanel/nodejs:16-base-rc" >> $GITHUB_ENV
 
       - name: Set env to production environment
         if: endsWith(github.ref, '/main')
         run: |
-          echo "IMAGE_TAG=devpanel/nodejs-base" >> $GITHUB_ENV
+          echo "IMAGE_TAG=devpanel/nodejs:16-base" >> $GITHUB_ENV
 
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -44,7 +44,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          file: ./base/Dockerfile
-          context: ./base/
+          file: ./16/base/Dockerfile
+          context: ./16/base/
           push: true
           tags: ${{ env.IMAGE_TAG }}
