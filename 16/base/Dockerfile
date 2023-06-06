@@ -10,7 +10,7 @@ ENV SHELL /bin/bash
 
 #== Update the repository sources list and install dependencies
 RUN apt-get update \
-    && apt-get install -y curl \
+    && apt-get install -y curl git \
     && apt-get -y autoclean
 
 #== Install apache2
