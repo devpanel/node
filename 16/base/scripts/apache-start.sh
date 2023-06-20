@@ -22,9 +22,9 @@ sudo -u www -E -- code-server --auth none --port $CODES_PORT --host 0.0.0.0 $COD
 # and leave it there
 fg %1
 
-[ -f "$PM2_START_SCRIPT" ] && pm2 start $PM2_START_SCRIPT
+[ -f "$PM2_START_SCRIPT" ] && pm2 startOrRestart $PM2_START_SCRIPT
 else
 # Start the primary process and put it in the background
 sudo  apachectl -D FOREGROUND
-[ -f "$PM2_START_SCRIPT" ] && pm2 start $PM2_START_SCRIPT
+[ -f "$PM2_START_SCRIPT" ] && pm2 startOrRestart $PM2_START_SCRIPT
 fi
