@@ -8,6 +8,10 @@ ENV UID 1000
 ENV GID 1000
 ENV SHELL /bin/bash
 
+ENV CODES_PORT 8080
+ENV CODES_WORKING_DIR $APP_ROOT
+ENV CODES_ENABLE yes
+
 #== Update the repository sources list and install dependencies
 RUN apt-get update \
     && apt-get install -y curl git \
