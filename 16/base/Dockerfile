@@ -14,7 +14,7 @@ RUN apt-get update \
     && apt-get -y autoclean
 
 #== Install apache2
-RUN apt-get install apache2 -y
+RUN apt-get install apache2 python3 -y
 RUN apt-get install apache2-utils -y
 RUN  apt-get install -y sudo
 
