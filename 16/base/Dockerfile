@@ -10,7 +10,7 @@ ENV SHELL /bin/bash
 
 #== Update the repository sources list and install dependencies
 RUN apt-get update \
-    && apt-get install -y curl git \
+    && apt-get install -y curl git wget nano \
     && apt-get -y autoclean
 
 #== Install apache2
@@ -44,6 +44,22 @@ RUN  a2enmod rewrite remoteip proxy proxy_http proxy_balancer lbmethod_byrequest
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
+#== Install python2
+ARG PYTHON_VERSION=2.7.5
+RUN apt-get update \
+  && apt-get install -y wget gcc make openssl libffi-dev libgdbm-dev libsqlite3-dev libssl-dev zlib1g-dev \
+  && apt-get clean
+WORKDIR /tmp/
+RUN wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz \
+  && tar --extract -f Python-$PYTHON_VERSION.tgz \
+  && cd ./Python-$PYTHON_VERSION/ \
+  && ./configure --enable-optimizations --prefix=/usr/local \
+  && make && make install \
+  && cd ../ \
+  && rm -r ./Python-$PYTHON_VERSION*
+
+
+#== Config nodejs
 USER ${USER}
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 16.14.2
@@ -59,6 +75,7 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | b
 ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
 RUN npm install pm2 -g
+
 
 WORKDIR ${APP_ROOT}
 EXPOSE 80
