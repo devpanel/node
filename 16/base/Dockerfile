@@ -8,9 +8,13 @@ ENV UID 1000
 ENV GID 1000
 ENV SHELL /bin/bash
 
+ENV CODES_PORT 8080
+ENV CODES_WORKING_DIR $APP_ROOT
+ENV CODES_ENABLE yes
+
 #== Update the repository sources list and install dependencies
 RUN apt-get update \
-    && apt-get install -y curl git wget nano \
+    && apt-get install -y curl git wget nano apt-utils \
     && apt-get -y autoclean
 
 #== Install apache2
@@ -75,7 +79,6 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | b
 ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
 RUN npm install pm2 -g
-
 
 WORKDIR ${APP_ROOT}
 EXPOSE 80
