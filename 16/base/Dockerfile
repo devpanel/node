@@ -14,7 +14,7 @@ ENV CODES_ENABLE yes
 
 #== Update the repository sources list and install dependencies
 RUN apt-get update \
-    && apt-get install -y curl git wget nano apt-utils \
+    && apt-get install -y curl git wget nano apt-utils  zip unzip \
     && apt-get -y autoclean
 
 #== Install apache2
