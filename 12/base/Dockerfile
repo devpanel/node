@@ -74,7 +74,6 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | b
 
 ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
-RUN npm install pm2 -g
 
 #== Configure apache2
 COPY apache/scripts /scripts
@@ -84,10 +83,7 @@ WORKDIR ${APP_ROOT}
 EXPOSE 80
 EXPOSE 8080
 
-EXPOSE 3000
-EXPOSE 4000
-EXPOSE 7000
-EXPOSE 8000
+
 
 
 #== Start apache.
