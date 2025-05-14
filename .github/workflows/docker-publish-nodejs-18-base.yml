@@ -1,4 +1,4 @@
-name: Docker build and push NodeJs
+name: Docker build and push NodeJs 18
 
 env:
   DOCKER_BUILDKIT: 1
