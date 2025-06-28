@@ -1,5 +1,7 @@
 FROM debian:latest
 
+#== Arguments define
+ARG CODESERVER_VERSION="4.99.4"
 #== Default Environments
 ENV APP_ROOT /var/www/html/
 ENV USER www
@@ -18,7 +20,6 @@ RUN apt-get update \
     && apt-get -y autoclean
 
 #== Install apache2
-RUN apt-get install apache2 python3 -y
 RUN apt-get install apache2-utils -y
 RUN apt-get install -y sudo
 
@@ -33,7 +34,6 @@ RUN mkdir -p ${APP_ROOT} \
     && chown -R ${UID}:${GID} ${APP_ROOT}
 
 #== Install Codeserver [AMD Chip]
-ARG CODESERVER_VERSION="4.9.1"
 ADD https://github.com/coder/code-server/releases/download/v${CODESERVER_VERSION}/code-server_${CODESERVER_VERSION}_amd64.deb /tmp/
 RUN dpkg -i /tmp/code-server_${CODESERVER_VERSION}_amd64.deb \
     && rm /tmp/code-server_${CODESERVER_VERSION}_amd64.deb
@@ -47,19 +47,10 @@ RUN a2enmod rewrite remoteip proxy proxy_http proxy_balancer lbmethod_byrequests
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-#== Install python2
-ARG PYTHON_VERSION=2.7.5
 RUN apt-get update \
   && apt-get install -y wget gcc make openssl libffi-dev libgdbm-dev libsqlite3-dev libssl-dev zlib1g-dev \
   && apt-get clean
 WORKDIR /tmp/
-RUN wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz \
-  && tar --extract -f Python-$PYTHON_VERSION.tgz \
-  && cd ./Python-$PYTHON_VERSION/ \
-  && ./configure --enable-optimizations --prefix=/usr/local \
-  && make && make install \
-  && cd ../ \
-  && rm -r ./Python-$PYTHON_VERSION*
 
 #== Config nodejs
 USER ${USER}
