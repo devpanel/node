@@ -13,6 +13,10 @@ PM2_START_SCRIPT=$APP_ROOT/ecosystem.config.js
 [ ! -z "$WEB_ROOT" ] && sudo sed -i "s|{{WEB_ROOT}}|${WEB_ROOT}|" /etc/apache2/apache2.conf
 
 
+# Install custom packages if have
+[ -f "$APP_ROOT/.devpanel/custom_package_installer.sh" ] && /bin/bash $APP_ROOT/.devpanel/custom_package_installer.sh  >> /tmp/custom_package_installer.log &
+
+
 set -m
 if [[ "$CODES_ENABLE" == "yes" ]]; then
 # Start the primary process and put it in the background
