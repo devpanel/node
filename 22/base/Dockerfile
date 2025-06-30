@@ -12,6 +12,7 @@ ENV SHELL /bin/bash
 
 ENV CODES_PORT 8080
 ENV CODES_WORKING_DIR $APP_ROOT
+ENV CODES_USER_DATA_DIR $APP_ROOT/.vscode
 ENV CODES_ENABLE yes
 
 #== Update the repository sources list and install dependencies
