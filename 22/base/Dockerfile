@@ -39,7 +39,7 @@ RUN mkdir -p ${APP_ROOT} \
 WORKDIR ${APP_ROOT}
 #== Config nodejs
 USER ${USER}
-RUN npm install pm2 -g
+# RUN npm install pm2 -g
 
 # Expose Port
 EXPOSE 3000
