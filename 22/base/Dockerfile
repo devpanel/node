@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:22-bookworm
 
 #== Arguments
 ARG CODESERVER_VERSION="4.99.4"
@@ -22,14 +22,16 @@ RUN apt-get install -y sudo
 ADD https://github.com/coder/code-server/releases/download/v${CODESERVER_VERSION}/code-server_${CODESERVER_VERSION}_amd64.deb /tmp/
 RUN dpkg -i /tmp/code-server_${CODESERVER_VERSION}_amd64.deb \
     && rm /tmp/code-server_${CODESERVER_VERSION}_amd64.deb
-
+#== Install Codeserver [ARM Chip]
+# ADD https://github.com/coder/code-server/releases/download/v${CODESERVER_VERSION}/code-server_${CODESERVER_VERSION}_arm64.deb /tmp/
+# RUN dpkg -i /tmp/code-server_${CODESERVER_VERSION}_arm64.deb \
+#     && rm /tmp/code-server_${CODESERVER_VERSION}_arm64.deb
 #== Adding user
-RUN groupadd -g ${GID} ${GROUP} \
-    && useradd --system --shell /bin/bash --uid ${UID} --gid ${GROUP} --create-home --home-dir /home/${USER} ${USER} \
-    && adduser ${USER} www-data \
-    && apt install -y sudo \
-    && usermod -aG sudo ${USER} \
-    && echo "www ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
+# RUN groupadd -g ${GID} ${GROUP}
+    # && useradd --system --shell /bin/bash --uid ${UID} --gid ${GROUP} --create-home --home-dir /home/${USER} ${USER} \
+    # && adduser ${USER} www-data \
+    # && usermod -aG sudo ${USER} \
+    # && echo "www ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 RUN mkdir -p ${APP_ROOT} \
     && chown -R ${UID}:${GID} ${APP_ROOT}
