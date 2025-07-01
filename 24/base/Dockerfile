@@ -16,7 +16,7 @@ ENV CODES_USER_DATA_DIR=$APP_ROOT/.vscode
 ENV CODES_ENABLE=yes
 
 RUN apt-get update && \
-    apt-get install -y curl git wget nano apt-utils zip unzip python3 python3-apt && \
+    apt-get install -y sudo curl git wget nano apt-utils zip unzip python3 python3-apt && \
     mkdir -p /app
 
 ADD https://github.com/coder/code-server/releases/download/v${CODESERVER_VERSION}/code-server_${CODESERVER_VERSION}_amd64.deb /tmp/
