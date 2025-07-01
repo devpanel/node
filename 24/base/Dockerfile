@@ -77,4 +77,5 @@ WORKDIR ${APP_ROOT}
 EXPOSE 80
 
 #== Start.
-CMD ["sudo", "-E", "/bin/bash", "/scripts/docker-entrypoint.sh" ]
+ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
+CMD ["/bin/bash", "-c", "tail -f /dev/null"]
