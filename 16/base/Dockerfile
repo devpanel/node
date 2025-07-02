@@ -1,4 +1,4 @@
-FROM node:26-bookworm
+FROM node:16-bookworm
 #== Arguments
 ARG CODESERVER_VERSION="4.99.4"
 #== Default Environments
