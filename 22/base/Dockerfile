@@ -14,6 +14,8 @@ ENV CODES_WORKING_DIR=$APP_ROOT
 ENV CODES_USER_DATA_DIR=$APP_ROOT/.vscode
 ENV CODES_ENABLE=yes
 
+ENV NPM_GLOBAL_DIR=/home/${USER}/.npm-global
+
 RUN apt-get update && \
     apt-get install -y sudo curl git wget nano apt-utils zip unzip python3 python3-apt && \
     mkdir -p /app
@@ -32,6 +34,10 @@ RUN useradd --system --shell /bin/bash --create-home --home-dir /home/${USER} ${
     && usermod -aG sudo ${USER} \
     && echo "www ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+RUN mkdir -p $NPM_GLOBAL_DIR \
+    && npm config set prefix $NPM_GLOBAL_DIR \
+    && echo "export PATH=$NPM_GLOBAL_DIR/bin:$PATH" >> /home/${USER}/.bashrc \
+    && echo "export PATH=$NPM_GLOBAL_DIR/bin:$PATH" >> /home/${USER}/.profile
 USER ${USER}
 RUN mkdir ~/dev
 RUN touch ~/dev/null
