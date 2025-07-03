@@ -33,8 +33,10 @@ RUN useradd --system --shell /bin/bash --create-home --home-dir /home/${USER} ${
     && echo "www ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER ${USER}
+RUN mkdir ~/dev
+RUN touch ~/dev/null
 WORKDIR ${APP_ROOT}
 EXPOSE 3000
 
 #== Start
-CMD ["/bin/sh", "-c", "bash /scripts/docker-entrypoint.sh && tail -f /dev/null"]
+CMD ["/bin/sh", "-c", "bash /scripts/docker-entrypoint.sh && tail -f ~/dev/null"]
