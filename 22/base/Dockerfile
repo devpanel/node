@@ -46,4 +46,5 @@ WORKDIR ${APP_ROOT}
 EXPOSE 3000
 
 #== Start
-CMD ["/bin/sh", "-c", "bash /scripts/docker-entrypoint.sh && tail -f ~/dev/null"]
+ENTRYPOINT ["/scripts/docker-entrypoint.sh"]
+CMD ["tail -f ~/dev/null"]
