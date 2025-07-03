@@ -40,7 +40,7 @@ RUN npm install pm2 -g
 RUN mkdir ~/dev
 RUN touch ~/dev/null
 COPY scripts /scripts
-RUN chmod +x /scripts/docker-entrypoint.sh
+RUN sudo chmod +x /scripts/docker-entrypoint.sh
 
 WORKDIR ${APP_ROOT}
 EXPOSE 3000
