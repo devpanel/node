@@ -39,9 +39,9 @@ RUN mkdir -p $NPM_GLOBAL_DIR \
 RUN npm install pm2 -g
 RUN mkdir ~/dev
 RUN touch ~/dev/null
+COPY scripts /scripts
 RUN chmod +x /scripts/docker-entrypoint.sh
 
-COPY scripts /scripts
 WORKDIR ${APP_ROOT}
 EXPOSE 3000
 #== Start
