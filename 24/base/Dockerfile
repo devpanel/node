@@ -35,11 +35,12 @@ RUN useradd --system --shell /bin/bash --create-home --home-dir /home/${USER} ${
     && usermod -aG sudo ${USER} \
     && echo "www ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+USER ${USER}
 RUN mkdir -p $NPM_GLOBAL_DIR \
     && npm config set prefix $NPM_GLOBAL_DIR \
     && echo "export PATH=$NPM_GLOBAL_DIR/bin:$PATH" >> /home/${USER}/.bashrc \
     && echo "export PATH=$NPM_GLOBAL_DIR/bin:$PATH" >> /home/${USER}/.profile
-USER ${USER}
+
 RUN mkdir ~/dev
 RUN touch ~/dev/null
 WORKDIR ${APP_ROOT}
