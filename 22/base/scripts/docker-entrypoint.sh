@@ -11,6 +11,7 @@ sudo -u www -E -- code-server --port $CODES_PORT --host 0.0.0.0 $CODES_WORKING_D
 else
 sudo -u www -E -- code-server --auth none --port $CODES_PORT --host 0.0.0.0 $CODES_WORKING_DIR --user-data-dir=$CODES_USER_DATA_DIR &
 fi
+fi
 
 if [ -z "$DP_APP_CMD" ]; then
   echo "❌ DP_APP_CMD is not set. Exiting."
