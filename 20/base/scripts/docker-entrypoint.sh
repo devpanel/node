@@ -1,6 +1,5 @@
 #!/bin/bash
 # Turn on bash's job control
-PM2_START_SCRIPT=$APP_ROOT/ecosystem.config.js
 
 set -m
 # Install custom packages if have
@@ -8,15 +7,17 @@ set -m
 if [[ "$CODES_ENABLE" == "yes" ]]; then
 # Start the helper process
 if [[ "$CODES_AUTH" == "yes" ]]; then
-sudo -u www -E -- code-server --port $CODES_PORT --host 0.0.0.0 $CODES_WORKING_DIR --user-data-dir=$CODES_USER_DATA_DIR
+sudo -u www -E -- code-server --port $CODES_PORT --host 0.0.0.0 $CODES_WORKING_DIR --user-data-dir=$CODES_USER_DATA_DIR &
 else
-sudo -u www -E -- code-server --auth none --port $CODES_PORT --host 0.0.0.0 $CODES_WORKING_DIR --user-data-dir=$CODES_USER_DATA_DIR
+sudo -u www -E -- code-server --auth none --port $CODES_PORT --host 0.0.0.0 $CODES_WORKING_DIR --user-data-dir=$CODES_USER_DATA_DIR &
 fi
-# and leave it there
-fg %1
+fi
 
-[ -f "$PM2_START_SCRIPT" ] && pm2 startOrRestart $PM2_START_SCRIPT
-else
-# Start the primary process and put it in the background
-[ -f "$PM2_START_SCRIPT" ] && pm2 startOrRestart $PM2_START_SCRIPT
+if [ -z "$DP_APP_CMD" ]; then
+  echo "❌ DP_APP_CMD is not set. Exiting."
+  exit 1
 fi
+
+# Chạy lệnh từ biến DP_APP_CMD
+echo "🚀 Running: $DP_APP_CMD"
+eval "$DP_APP_CMD"
