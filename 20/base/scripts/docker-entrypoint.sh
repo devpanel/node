@@ -20,4 +20,5 @@ fi
 
 # Chạy lệnh từ biến DP_APP_CMD
 echo "🚀 Running: $DP_APP_CMD"
+cd $WEB_ROOT
 eval "$DP_APP_CMD"
