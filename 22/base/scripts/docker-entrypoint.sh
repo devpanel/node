@@ -12,4 +12,11 @@ else
 sudo -u www -E -- code-server --auth none --port $CODES_PORT --host 0.0.0.0 $CODES_WORKING_DIR --user-data-dir=$CODES_USER_DATA_DIR &
 fi
 
-exec "$@"
+if [ -z "$DP_APP_CMD" ]; then
+  echo "❌ DP_APP_CMD is not set. Exiting."
+  exit 1
+fi
+
+# Chạy lệnh từ biến DP_APP_CMD
+echo "🚀 Running: $DP_APP_CMD"
+eval "$DP_APP_CMD"
