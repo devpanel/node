@@ -25,9 +25,6 @@ ADD https://github.com/coder/code-server/releases/download/v${CODESERVER_VERSION
 RUN dpkg -i /tmp/code-server_${CODESERVER_VERSION}_amd64.deb \
     && rm /tmp/code-server_${CODESERVER_VERSION}_amd64.deb
 
-RUN npm install pm2 -g
-COPY scripts /scripts
-
 #== Adding user
 RUN getent group ${GID} || groupadd -g ${GID} ${GROUP}
 RUN useradd --system --shell /bin/bash --create-home --home-dir /home/${USER} ${USER} \
@@ -43,6 +40,9 @@ RUN mkdir -p $NPM_GLOBAL_DIR \
 
 RUN mkdir ~/dev
 RUN touch ~/dev/null
+COPY scripts /scripts
+RUN sudo chmod +x /scripts/docker-entrypoint.sh
+
 WORKDIR ${APP_ROOT}
 EXPOSE 3000
 

@@ -36,7 +36,7 @@ RUN mkdir -p $NPM_GLOBAL_DIR \
     && npm config set prefix $NPM_GLOBAL_DIR \
     && echo "export PATH=$NPM_GLOBAL_DIR/bin:$PATH" >> /home/${USER}/.bashrc \
     && echo "export PATH=$NPM_GLOBAL_DIR/bin:$PATH" >> /home/${USER}/.profile
-RUN npm install pm2 -g
+
 RUN mkdir ~/dev
 RUN touch ~/dev/null
 COPY scripts /scripts
