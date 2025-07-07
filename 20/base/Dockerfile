@@ -46,5 +46,5 @@ RUN sudo chmod +x /scripts/docker-entrypoint.sh
 WORKDIR ${APP_ROOT}
 EXPOSE 3000
 
-#=== Start
+#==== Start
 CMD ["/bin/bash", "-c", "/scripts/docker-entrypoint.sh"]
