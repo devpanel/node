@@ -39,7 +39,7 @@ RUN mkdir -p $NPM_GLOBAL_DIR \
     && echo "export PATH=$NPM_GLOBAL_DIR/bin:$PATH" >> /home/${USER}/.profile
 
 RUN mkdir ~/dev
-RUN touch ~/dev/null
+RUN touch ~/dev/log
 COPY scripts /scripts
 RUN sudo chmod +x /scripts/docker-entrypoint.sh
 
