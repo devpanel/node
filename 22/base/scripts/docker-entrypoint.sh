@@ -18,7 +18,7 @@ if [ -z "$DP_APP_CMD" ]; then
   exit 1
 fi
 
-# Chạy lệnh từ biến DP_APP_CMD
+# Run command from variable DP_APP_CMD
 echo "🚀 Running: $DP_APP_CMD"
 cd $WEB_ROOT
 eval "$DP_APP_CMD"
