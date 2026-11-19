@@ -20,6 +20,7 @@ ENV NPM_GLOBAL_DIR=/home/${USER}/.npm-global
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+    sudo \
     curl \
     git \
     wget \
@@ -54,38 +55,22 @@ RUN npm install -g pnpm@latest corepack@latest \
     && corepack install -g yarn@stable
 
 #== Adding user
-#== Adding user
-RUN userdel -r node 2>/dev/null || true \
-    && groupdel node 2>/dev/null || true \
-    && groupadd -g ${GID} ${GROUP} \
-    && useradd --system \
-        --uid ${UID} \
-        --gid ${GID} \
-        --shell ${SHELL} \
-        --create-home \
-        --home-dir /home/${USER} \
-        ${USER} \
-    && usermod -aG www-data ${USER}
+RUN getent group ${GID} || groupadd -g ${GID} ${GROUP}
+RUN useradd --system --shell /bin/bash --create-home --home-dir /home/${USER} ${USER} \
+    && adduser ${USER} www-data \
+    && usermod -aG sudo ${USER} \
+    && echo "www ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-#== Setup directories and permissions
-RUN mkdir -p ${NPM_GLOBAL_DIR} \
-    ${APP_ROOT} \
-    /home/${USER}/dev \
-    && touch /home/${USER}/dev/log \
-    && chown -R ${USER}:${GROUP} \
-        /home/${USER} \
-        ${APP_ROOT}
-
-COPY scripts /scripts
-
-RUN chmod +x /scripts/docker-entrypoint.sh
-
-#== Configure npm
 USER ${USER}
+RUN mkdir -p $NPM_GLOBAL_DIR \
+    && npm config set prefix $NPM_GLOBAL_DIR \
+    && echo "export PATH=$NPM_GLOBAL_DIR/bin:$PATH" >> /home/${USER}/.bashrc \
+    && echo "export PATH=$NPM_GLOBAL_DIR/bin:$PATH" >> /home/${USER}/.profile
 
-RUN npm config set prefix ${NPM_GLOBAL_DIR} \
-    && echo "export PATH=${NPM_GLOBAL_DIR}/bin:\$PATH" >> /home/${USER}/.bashrc \
-    && echo "export PATH=${NPM_GLOBAL_DIR}/bin:\$PATH" >> /home/${USER}/.profile
+RUN mkdir ~/dev
+RUN touch ~/dev/log
+COPY scripts /scripts
+RUN sudo chmod +x /scripts/docker-entrypoint.sh
 
 WORKDIR ${APP_ROOT}
 EXPOSE ${PORT}
