@@ -19,6 +19,7 @@ ENV NPM_GLOBAL_DIR=/home/${USER}/.npm-global
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+    sudo \
     curl \
     git \
     wget \
