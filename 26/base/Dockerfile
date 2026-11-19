@@ -17,6 +17,9 @@ ENV CODES_USER_DATA_DIR=$APP_ROOT/.vscode
 ENV CODES_ENABLE=yes
 
 ENV NPM_GLOBAL_DIR=/home/${USER}/.npm-global
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -37,6 +40,7 @@ RUN apt-get update \
     default-mysql-client \
     postgresql-client \
     libpq-dev \
+    locales \
     rsync \
     jq \
     dnsutils \
@@ -49,10 +53,13 @@ RUN apt-get update \
 ADD https://github.com/coder/code-server/releases/download/v${CODESERVER_VERSION}/code-server_${CODESERVER_VERSION}_amd64.deb /tmp/
 RUN dpkg -i /tmp/code-server_${CODESERVER_VERSION}_amd64.deb \
     && rm /tmp/code-server_${CODESERVER_VERSION}_amd64.deb
-
 RUN npm install -g pnpm@latest corepack@latest \
     && corepack enable \
     && corepack install -g yarn@stable
+RUN sed -i -e 's/^# \(en_US.UTF-8 UTF-8\)/\1/' \
+           -e 's/^# \(vi_VN UTF-8\)/\1/' /etc/locale.gen \
+    && locale-gen \
+    && update-locale LANG=en_US.UTF-8
 
 #== Adding user
 RUN getent group ${GID} || groupadd -g ${GID} ${GROUP}
