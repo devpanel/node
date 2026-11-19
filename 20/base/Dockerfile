@@ -10,6 +10,7 @@ ENV UID=1000
 ENV GID=1000
 ENV SHELL=/bin/bash
 
+ENV PORT=3000
 ENV CODES_PORT=8080
 ENV CODES_WORKING_DIR=$APP_ROOT
 ENV CODES_USER_DATA_DIR=$APP_ROOT/.vscode
@@ -44,7 +45,7 @@ COPY scripts /scripts
 RUN sudo chmod +x /scripts/docker-entrypoint.sh
 
 WORKDIR ${APP_ROOT}
-EXPOSE 3000
+EXPOSE ${PORT}
 
 #=== Start
 CMD ["/bin/bash", "-c", "/scripts/docker-entrypoint.sh"]
