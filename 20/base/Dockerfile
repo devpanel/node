@@ -18,10 +18,33 @@ ENV CODES_ENABLE=yes
 
 ENV NPM_GLOBAL_DIR=/home/${USER}/.npm-global
 
-RUN apt-get update && \
-    apt-get install -y sudo curl git wget nano apt-utils zip unzip python3 python3-apt && \
-    mkdir -p /app
-
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    wget \
+    nano \
+    zip \
+    unzip \
+    python3 \
+    python3-apt \
+    ca-certificates \
+    openssl \
+    make \
+    g++ \
+    pkg-config \
+    default-mysql-client \
+    postgresql-client \
+    libpq-dev \
+    rsync \
+    jq \
+    dnsutils \
+    iputils-ping \
+    procps \
+    gnupg \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /app
+    
 ADD https://github.com/coder/code-server/releases/download/v${CODESERVER_VERSION}/code-server_${CODESERVER_VERSION}_amd64.deb /tmp/
 RUN dpkg -i /tmp/code-server_${CODESERVER_VERSION}_amd64.deb \
     && rm /tmp/code-server_${CODESERVER_VERSION}_amd64.deb
