@@ -25,9 +25,9 @@ ADD https://github.com/coder/code-server/releases/download/v${CODESERVER_VERSION
 RUN dpkg -i /tmp/code-server_${CODESERVER_VERSION}_amd64.deb \
     && rm /tmp/code-server_${CODESERVER_VERSION}_amd64.deb
 
-RUN npm install -g \
-    pnpm@latest \
-    yarn@latest
+RUN npm install -g pnpm@latest corepack@latest \
+    && corepack enable \
+    && corepack install -g yarn@stable
 
 #== Adding user
 RUN getent group ${GID} || groupadd -g ${GID} ${GROUP}
