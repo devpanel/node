@@ -20,6 +20,9 @@ ENV NPM_GLOBAL_DIR=/home/${USER}/.npm-global
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -35,6 +38,8 @@ RUN apt-get update \
     ca-certificates \
     openssl \
     make \
+    build-essential \
+    libssl-dev \
     g++ \
     pkg-config \
     default-mysql-client \
@@ -54,12 +59,16 @@ ADD https://github.com/coder/code-server/releases/download/v${CODESERVER_VERSION
 RUN dpkg -i /tmp/code-server_${CODESERVER_VERSION}_amd64.deb \
     && rm /tmp/code-server_${CODESERVER_VERSION}_amd64.deb
 RUN npm install -g pnpm@latest corepack@latest \
-    && corepack enable \
+    && corepack disable pnpm \
+    && corepack enable yarn \
     && corepack install -g yarn@stable
 RUN sed -i -e 's/^# \(en_US.UTF-8 UTF-8\)/\1/' \
            -e 's/^# \(vi_VN UTF-8\)/\1/' /etc/locale.gen \
     && locale-gen \
     && update-locale LANG=en_US.UTF-8
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
+    sh -s -- -y --profile minimal --default-toolchain stable \
+    && rustc --version && cargo --version
 
 #== Adding user
 RUN getent group ${GID} || groupadd -g ${GID} ${GROUP}
