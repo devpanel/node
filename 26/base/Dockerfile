@@ -59,7 +59,7 @@ ADD https://github.com/coder/code-server/releases/download/v${CODESERVER_VERSION
 RUN dpkg -i /tmp/code-server_${CODESERVER_VERSION}_amd64.deb \
     && rm /tmp/code-server_${CODESERVER_VERSION}_amd64.deb
 RUN npm install -g pnpm@latest corepack@latest \
-    && corepack disable pnpm \
+    && corepack enable pnpm \
     && corepack enable yarn \
     && corepack install -g yarn@stable
 RUN sed -i -e 's/^# \(en_US.UTF-8 UTF-8\)/\1/' \
