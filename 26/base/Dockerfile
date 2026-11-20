@@ -77,6 +77,7 @@ RUN useradd --system --shell /bin/bash --create-home --home-dir /home/${USER} ${
     && usermod -aG sudo ${USER} \
     && echo "www ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+RUN chown -R ${USER}:${GROUP} ${RUSTUP_HOME} ${CARGO_HOME}
 USER ${USER}
 RUN mkdir -p $NPM_GLOBAL_DIR \
     && npm config set prefix $NPM_GLOBAL_DIR \
